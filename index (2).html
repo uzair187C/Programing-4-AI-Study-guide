@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI271 — Programming for AI | Midterm Study Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #2a2a38;
+    --text: #e2dff5;
+    --muted: #6b6880;
+    --nb1: #f97316;
+    --nb2: #a855f7;
+    --nb3: #22c55e;
+    --nb4: #3b82f6;
+    --nb5: #ec4899;
+    --correct: #166534;
+    --correct-border: #22c55e;
+    --wrong: #7f1d1d;
+    --wrong-border: #ef4444;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: linear-gradient(135deg, #0d0d1a 0%, #12122a 60%, #0d1b2a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 32px 0;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-top { display:flex; align-items:baseline; gap:16px; flex-wrap:wrap; }
+  .course-tag {
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; letter-spacing:3px;
+    color: var(--muted); text-transform:uppercase;
+  }
+  header h1 {
+    font-family:'Syne', sans-serif;
+    font-size:clamp(18px,3vw,26px);
+    font-weight:800; color:#fff;
+    letter-spacing:-0.5px;
+  }
+  .subtitle { font-size:12px; color:var(--muted); margin-top:4px; }
+
+  .tab-bar {
+    display:flex; gap:2px; margin-top:20px;
+  }
+  .tab-btn {
+    padding:10px 20px;
+    background:transparent; border:none;
+    border-bottom:2px solid transparent;
+    color:var(--muted);
+    font-family:'Inter',sans-serif;
+    font-size:13px; font-weight:600;
+    cursor:pointer; transition:all .2s;
+    letter-spacing:.3px;
+  }
+  .tab-btn:hover { color:var(--text); }
+  .tab-btn.active { color:#fff; border-bottom-color:#fff; }
+
+  /* ─── LAYOUT ─── */
+  .layout { display:flex; min-height:calc(100vh - 110px); }
+
+  /* ─── SIDEBAR ─── */
+  aside {
+    width:230px; flex-shrink:0;
+    border-right:1px solid var(--border);
+    padding:16px 0;
+    position:sticky; top:110px;
+    height:calc(100vh - 110px);
+    overflow-y:auto;
+  }
+  .nb-btn {
+    display:block; width:100%;
+    padding:11px 16px;
+    background:transparent; border:none;
+    border-left:3px solid transparent;
+    color:var(--muted);
+    font-family:'Inter',sans-serif;
+    font-size:12px; text-align:left;
+    cursor:pointer; transition:all .15s;
+    line-height:1.4;
+  }
+  .nb-btn:hover { color:var(--text); background:#ffffff08; }
+  .nb-btn.active { color:#fff; background:#ffffff0a; }
+  .nb-label { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:2px; }
+  .nb-title { font-weight:600; }
+
+  /* ─── MAIN CONTENT ─── */
+  main { flex:1; padding:28px 36px; max-width:820px; overflow-x:hidden; }
+
+  .topic-header { margin-bottom:24px; }
+  .topic-nb-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+  .topic-title { font-family:'Syne',sans-serif; font-size:22px; font-weight:700; color:#fff; }
+
+  /* Section pills */
+  .section-pills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:22px; }
+  .pill-btn {
+    padding:5px 11px; border-radius:5px;
+    border:1px solid var(--border);
+    background:transparent;
+    color:var(--muted);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px; cursor:pointer;
+    transition:all .15s;
+  }
+  .pill-btn:hover { color:var(--text); border-color:#444; }
+  .pill-btn.active { font-weight:600; }
+
+  /* Section card */
+  .section-heading {
+    font-family:'Syne',sans-serif;
+    font-size:17px; font-weight:700; color:#fff;
+    padding-bottom:10px; margin-bottom:16px;
+    border-bottom:2px solid;
+  }
+
+  /* Code block */
+  .code-block {
+    background:#0d0d16;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:20px 22px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px; line-height:1.8;
+    color:#c9c4e8;
+    overflow-x:auto;
+    white-space:pre;
+    tab-size:4;
+    position:relative;
+  }
+  .code-block .cm  { color:#6272a4; } /* comments */
+  .code-block .kw  { color:#ff79c6; } /* keywords */
+  .code-block .fn  { color:#50fa7b; } /* functions */
+  .code-block .st  { color:#f1fa8c; } /* strings */
+  .code-block .nm  { color:#bd93f9; } /* numbers */
+  .code-block .op  { color:#ff79c6; } /* operators */
+  .code-block .ar  { color:#8be9fd; } /* arrows/output */
+
+  /* Key note box */
+  .key-note {
+    margin-top:12px;
+    border-radius:8px;
+    padding:13px 16px;
+    font-size:13px; color:#ccc;
+    border-left:3px solid;
+  }
+  .key-note .kn-label { font-weight:700; margin-right:6px; }
+
+  /* Nav footer */
+  .nav-footer {
+    display:flex; justify-content:space-between;
+    align-items:center; margin-top:28px;
+    padding-top:20px; border-top:1px solid var(--border);
+  }
+  .nav-btn {
+    padding:8px 18px; border-radius:7px;
+    border:1px solid var(--border);
+    background:transparent; color:var(--muted);
+    font-size:13px; cursor:pointer; transition:all .15s;
+  }
+  .nav-btn:hover:not(:disabled) { color:var(--text); border-color:#555; }
+  .nav-btn:disabled { opacity:.3; cursor:default; }
+  .nav-btn.primary { font-weight:600; }
+  .nav-progress { font-size:12px; color:var(--muted); }
+
+  /* ─── QUIZ ─── */
+  .quiz-wrap { max-width:660px; margin:40px auto; padding:0 24px; }
+  .quiz-meta { display:flex; justify-content:space-between; margin-bottom:20px; font-size:13px; color:var(--muted); }
+  .progress-bar { background:var(--surface2); border-radius:4px; height:4px; margin-bottom:28px; }
+  .progress-fill { height:4px; border-radius:4px; background:#fff; transition:width .3s; }
+  .quiz-q { font-family:'Syne',sans-serif; font-size:17px; font-weight:600; color:#fff; line-height:1.5; margin-bottom:24px; }
+  .options { display:flex; flex-direction:column; gap:10px; }
+  .opt-btn {
+    padding:14px 18px; border-radius:9px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:#ccc; cursor:pointer;
+    text-align:left; font-size:13.5px;
+    font-family:'Inter',sans-serif;
+    transition:all .15s;
+    display:flex; gap:12px; align-items:center;
+  }
+  .opt-btn:hover:not(.locked) { border-color:#555; background:var(--surface2); color:#fff; }
+  .opt-btn .opt-letter { color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:12px; min-width:18px; }
+  .opt-btn.correct { background:#052e16; border-color:var(--correct-border); color:#fff; }
+  .opt-btn.wrong   { background:#450a0a; border-color:var(--wrong-border); color:#fff; }
+
+  .explain-box {
+    margin-top:16px; padding:14px 16px;
+    border-radius:8px; font-size:13px; color:#ccc;
+    border:1px solid; line-height:1.6;
+  }
+  .explain-box.good { background:#052e16; border-color:var(--correct-border); }
+  .explain-box.bad  { background:#450a0a; border-color:var(--wrong-border); }
+  .explain-label { font-weight:700; margin-right:6px; }
+
+  .next-btn {
+    margin-top:20px; width:100%;
+    padding:13px; border-radius:9px;
+    background:#fff; color:#0a0a0f;
+    border:none; cursor:pointer;
+    font-size:14px; font-weight:700;
+    font-family:'Syne',sans-serif;
+    transition:opacity .15s;
+  }
+  .next-btn:hover { opacity:.9; }
+
+  /* Results */
+  .results { text-align:center; padding:48px 24px; }
+  .results .emoji { font-size:72px; margin-bottom:16px; }
+  .results .score { font-family:'Syne',sans-serif; font-size:48px; font-weight:800; color:#fff; }
+  .results .score-label { font-size:16px; color:var(--muted); margin-bottom:8px; }
+  .results .score-msg { font-size:14px; color:var(--muted); margin:12px 0 28px; }
+  .restart-btn {
+    padding:12px 32px; border-radius:9px;
+    background:#fff; color:#0a0a0f;
+    border:none; cursor:pointer;
+    font-size:15px; font-weight:700;
+    font-family:'Syne',sans-serif;
+  }
+
+  /* ─── CHEATSHEET tab ─── */
+  .cheatsheet { padding:28px 36px; max-width:960px; }
+  .cs-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
+  .cs-card {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px; padding:16px;
+  }
+  .cs-card h3 { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; margin-bottom:10px; text-transform:uppercase; letter-spacing:1px; }
+  .cs-table { width:100%; border-collapse:collapse; font-size:12px; }
+  .cs-table td { padding:4px 6px; color:#bbb; }
+  .cs-table td:first-child { font-family:'JetBrains Mono',monospace; color:#bd93f9; white-space:nowrap; }
+  .cs-table tr:not(:last-child) td { border-bottom:1px solid var(--border); }
+
+  /* page hide/show */
+  .page { display:none; }
+  .page.active { display:block; }
+  .tab-guide .layout { display:flex; }
+
+  @media(max-width:700px) {
+    aside { display:none; }
+    main, .cheatsheet { padding:20px 16px; }
+    header { padding:20px 16px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <span class="course-tag">AI271 · SST · UMT</span>
+    <h1>Programming for AI — Midterm Study Guide</h1>
+  </div>
+  <div class="subtitle">Notebooks 1–4 complete &nbsp;·&nbsp; Notebook 5 (before concat &amp; merge)</div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('guide')">📖 Study Guide</button>
+    <button class="tab-btn" onclick="showTab('cheatsheet')">⚡ Cheat Sheet</button>
+    <button class="tab-btn" onclick="showTab('quiz')">🧠 Practice Quiz</button>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════
+     STUDY GUIDE TAB
+══════════════════════════════════════ -->
+<div id="tab-guide" class="page active">
+<div class="layout">
+<aside id="sidebar"></aside>
+<main id="main-content"></main>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CHEAT SHEET TAB
+══════════════════════════════════════ -->
+<div id="tab-cheatsheet" class="page">
+<div class="cheatsheet">
+  <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:20px;">⚡ Quick Reference — Everything at a Glance</div>
+  <div class="cs-grid" id="cheatsheet-grid"></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     QUIZ TAB
+══════════════════════════════════════ -->
+<div id="tab-quiz" class="page">
+<div class="quiz-wrap" id="quiz-wrap"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════════
+const TOPICS = [
+{
+  id:'nb1', label:'Notebook 1', title:'Python Basics — Variables, Types & Operators', color:'#f97316',
+  sections:[
+    {
+      h:'Variables & Data Types',
+      body:`<span class="cm"># Variables — no type declaration needed</span>
+x = 10          <span class="cm"># int</span>
+name = <span class="st">"Ali"</span>    <span class="cm"># str</span>
+pi = 3.14       <span class="cm"># float</span>
+flag = <span class="kw">True</span>    <span class="cm"># bool</span>
+
+<span class="cm"># Multiple assignment</span>
+a, b, c = 1, 2, 3
+x = y = z = 0   <span class="cm"># all get value 0</span>
+
+<span class="cm"># Check type</span>
+<span class="fn">type</span>(x)         <span class="ar">→ &lt;class 'int'&gt;</span>
+
+<span class="cm"># Type conversion (casting)</span>
+<span class="fn">int</span>(<span class="st">"5"</span>)          <span class="ar">→ 5</span>
+<span class="fn">float</span>(<span class="st">"3.2"</span>)      <span class="ar">→ 3.2</span>
+<span class="fn">str</span>(100)          <span class="ar">→ "100"</span>
+<span class="fn">bool</span>(0)           <span class="ar">→ False</span>
+<span class="fn">bool</span>(1)           <span class="ar">→ True</span>
+<span class="fn">bool</span>(<span class="st">""</span>)          <span class="ar">→ False   (empty string is falsy!)</span>`,
+      note:'bool(0) and bool("") are False. Everything else is True. Variables are case-sensitive: x ≠ X.'
+    },
+    {
+      h:'Arithmetic Operators',
+      body:`x = 7
+y = 2
+
+x + y   <span class="ar">→ 9</span>      <span class="cm"># addition</span>
+x - y   <span class="ar">→ 5</span>      <span class="cm"># subtraction</span>
+x * y   <span class="ar">→ 14</span>     <span class="cm"># multiplication</span>
+x / y   <span class="ar">→ 3.5</span>    <span class="cm"># division — ALWAYS returns float</span>
+x // y  <span class="ar">→ 3</span>      <span class="cm"># floor division — drops decimal</span>
+x % y   <span class="ar">→ 1</span>      <span class="cm"># modulus — remainder</span>
+x ** y  <span class="ar">→ 49</span>     <span class="cm"># exponentiation (7²)</span>
+
+<span class="cm"># Handy tricks</span>
+10 % 2 == 0   <span class="ar">→ True   (even number check)</span>
+10 % 3        <span class="ar">→ 1      (remainder when dividing 10 by 3)</span>
+
+<span class="cm"># Augmented assignment</span>
+x += 1   <span class="cm"># same as x = x + 1</span>
+x -= 1
+x *= 2`,
+      note:'/ always returns float (7/2 = 3.5). // floors toward negative infinity (not toward zero).'
+    },
+    {
+      h:'Comparison & Logical Operators',
+      body:`<span class="cm"># Comparison operators — return True or False</span>
+5 == 5    <span class="ar">→ True</span>   <span class="cm"># equal</span>
+5 != 3    <span class="ar">→ True</span>   <span class="cm"># not equal</span>
+5 > 3     <span class="ar">→ True</span>   <span class="cm"># greater than</span>
+5 < 3     <span class="ar">→ False</span>  <span class="cm"># less than</span>
+5 >= 5    <span class="ar">→ True</span>   <span class="cm"># greater or equal</span>
+3 <= 5    <span class="ar">→ True</span>   <span class="cm"># less or equal</span>
+
+<span class="cm"># Logical operators</span>
+<span class="kw">True</span>  <span class="kw">and</span> <span class="kw">False</span>  <span class="ar">→ False</span>   <span class="cm"># both must be True</span>
+<span class="kw">True</span>  <span class="kw">or</span>  <span class="kw">False</span>  <span class="ar">→ True</span>    <span class="cm"># at least one True</span>
+<span class="kw">not</span> <span class="kw">True</span>          <span class="ar">→ False</span>   <span class="cm"># flip it</span>
+
+<span class="cm"># Chaining comparisons (Python-only feature!)</span>
+1 < x < 10   <span class="cm"># True if x is between 1 and 10</span>`,
+      note:'= is ASSIGNMENT. == is COMPARISON. Mixing them up is the #1 beginner mistake.'
+    },
+    {
+      h:'Strings',
+      body:`s = <span class="st">"Hello, World!"</span>
+
+<span class="cm"># Common methods</span>
+<span class="fn">len</span>(s)               <span class="ar">→ 13</span>
+s.<span class="fn">upper</span>()            <span class="ar">→ "HELLO, WORLD!"</span>
+s.<span class="fn">lower</span>()            <span class="ar">→ "hello, world!"</span>
+s.<span class="fn">strip</span>()            <span class="cm"># remove leading/trailing spaces</span>
+s.<span class="fn">replace</span>(<span class="st">"Hello"</span>,<span class="st">"Hi"</span>) <span class="ar">→ "Hi, World!"</span>
+s.<span class="fn">split</span>(<span class="st">","</span>)         <span class="ar">→ ["Hello", " World!"]</span>
+s.<span class="fn">startswith</span>(<span class="st">"He"</span>) <span class="ar">→ True</span>
+s.<span class="fn">find</span>(<span class="st">"World"</span>)      <span class="ar">→ 7   (index where found)</span>
+
+<span class="cm"># String indexing (same rules as lists!)</span>
+s[0]   <span class="ar">→ "H"</span>
+s[-1]  <span class="ar">→ "!"</span>
+s[0:5] <span class="ar">→ "Hello"</span>
+
+<span class="cm"># f-strings — the modern way to format</span>
+name = <span class="st">"Ali"</span>
+age = <span class="nm">20</span>
+<span class="fn">print</span>(<span class="st">f"My name is {name} and I am {age}"</span>)
+<span class="ar"># My name is Ali and I am 20</span>
+
+<span class="cm"># Concatenation</span>
+<span class="st">"Hello"</span> + <span class="st">" "</span> + <span class="st">"World"</span>  <span class="ar">→ "Hello World"</span>`,
+      note:'Strings are IMMUTABLE — methods always return a NEW string, they never change the original.'
+    },
+    {
+      h:'Input & Output',
+      body:`<span class="cm"># Output</span>
+<span class="fn">print</span>(<span class="st">"Hello"</span>)
+<span class="fn">print</span>(<span class="st">"a ="</span>, a)
+<span class="fn">print</span>(<span class="st">f"Value is {x:.2f}"</span>)  <span class="cm"># 2 decimal places</span>
+
+<span class="cm"># Input — always returns a STRING</span>
+name = <span class="fn">input</span>(<span class="st">"Enter name: "</span>)
+age  = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter age: "</span>))   <span class="cm"># cast to int!</span>
+
+<span class="cm"># print() options</span>
+<span class="fn">print</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, sep=<span class="st">"-"</span>)  <span class="ar">→ a-b-c</span>
+<span class="fn">print</span>(<span class="st">"hi"</span>, end=<span class="st">" "</span>)            <span class="cm"># no newline</span>`,
+      note:'input() always returns a string. Always cast with int() or float() when you need numbers.'
+    }
+  ]
+},
+{
+  id:'nb2', label:'Notebook 2', title:'Control Flow — Conditions, Loops & Functions', color:'#a855f7',
+  sections:[
+    {
+      h:'if / elif / else',
+      body:`score = <span class="nm">75</span>
+
+<span class="kw">if</span> score >= <span class="nm">90</span>:
+    <span class="fn">print</span>(<span class="st">"A"</span>)
+<span class="kw">elif</span> score >= <span class="nm">80</span>:
+    <span class="fn">print</span>(<span class="st">"B"</span>)
+<span class="kw">elif</span> score >= <span class="nm">70</span>:
+    <span class="fn">print</span>(<span class="st">"C"</span>)       <span class="ar"># ← this runs</span>
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"F"</span>)
+
+<span class="cm"># Ternary (one-liner)</span>
+result = <span class="st">"pass"</span> <span class="kw">if</span> score >= <span class="nm">50</span> <span class="kw">else</span> <span class="st">"fail"</span>
+
+<span class="cm"># Nested if</span>
+<span class="kw">if</span> x > <span class="nm">0</span>:
+    <span class="kw">if</span> x % <span class="nm">2</span> == <span class="nm">0</span>:
+        <span class="fn">print</span>(<span class="st">"positive even"</span>)
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="st">"positive odd"</span>)`,
+      note:'Indentation is MANDATORY in Python — use 4 spaces. Missing/wrong indent = IndentationError.'
+    },
+    {
+      h:'for Loop & range()',
+      body:`<span class="cm"># range(stop)           → 0 to stop-1</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">5</span>):
+    <span class="fn">print</span>(i)    <span class="ar"># 0 1 2 3 4</span>
+
+<span class="cm"># range(start, stop)     → start to stop-1</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">1</span>, <span class="nm">6</span>):
+    <span class="fn">print</span>(i)    <span class="ar"># 1 2 3 4 5</span>
+
+<span class="cm"># range(start, stop, step)</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">0</span>, <span class="nm">10</span>, <span class="nm">2</span>):
+    <span class="fn">print</span>(i)    <span class="ar"># 0 2 4 6 8</span>
+
+<span class="cm"># Loop over a list</span>
+fruits = [<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"cherry"</span>]
+<span class="kw">for</span> fruit <span class="kw">in</span> fruits:
+    <span class="fn">print</span>(fruit)
+
+<span class="cm"># enumerate — get index AND value</span>
+<span class="kw">for</span> i, fruit <span class="kw">in</span> <span class="fn">enumerate</span>(fruits):
+    <span class="fn">print</span>(i, fruit)   <span class="ar"># 0 apple  /  1 banana  /  2 cherry</span>`,
+      note:'range(stop) is EXCLUSIVE — range(5) gives 0,1,2,3,4 (NOT 5). range is lazy — use list(range()) to see values.'
+    },
+    {
+      h:'while, break & continue',
+      body:`<span class="cm"># while loop</span>
+count = <span class="nm">0</span>
+<span class="kw">while</span> count < <span class="nm">5</span>:
+    <span class="fn">print</span>(count)
+    count += <span class="nm">1</span>    <span class="cm"># MUST increment or infinite loop!</span>
+
+<span class="cm"># break — exit loop immediately</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">10</span>):
+    <span class="kw">if</span> i == <span class="nm">5</span>:
+        <span class="kw">break</span>      <span class="cm"># stops when i = 5</span>
+    <span class="fn">print</span>(i)    <span class="ar"># prints 0 1 2 3 4</span>
+
+<span class="cm"># continue — skip current iteration, keep going</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">6</span>):
+    <span class="kw">if</span> i == <span class="nm">3</span>:
+        <span class="kw">continue</span>   <span class="cm"># skips 3</span>
+    <span class="fn">print</span>(i)    <span class="ar"># prints 0 1 2 4 5</span>
+
+<span class="cm"># while + break pattern</span>
+<span class="kw">while</span> <span class="kw">True</span>:
+    user = <span class="fn">input</span>(<span class="st">"Enter 'quit' to exit: "</span>)
+    <span class="kw">if</span> user == <span class="st">"quit"</span>:
+        <span class="kw">break</span>`,
+      note:'break exits the ENTIRE loop. continue skips only the CURRENT iteration. Both work in for and while.'
+    },
+    {
+      h:'Functions',
+      body:`<span class="cm"># Define</span>
+<span class="kw">def</span> <span class="fn">greet</span>(name):
+    <span class="kw">return</span> <span class="st">"Hello, "</span> + name
+
+<span class="cm"># Call</span>
+<span class="fn">greet</span>(<span class="st">"Ali"</span>)    <span class="ar">→ "Hello, Ali"</span>
+
+<span class="cm"># Default parameter</span>
+<span class="kw">def</span> <span class="fn">power</span>(base, exp=<span class="nm">2</span>):
+    <span class="kw">return</span> base ** exp
+
+<span class="fn">power</span>(<span class="nm">3</span>)       <span class="ar">→ 9</span>    <span class="cm"># exp defaults to 2</span>
+<span class="fn">power</span>(<span class="nm">3</span>, <span class="nm">3</span>)    <span class="ar">→ 27</span>
+
+<span class="cm"># Multiple return values (tuple)</span>
+<span class="kw">def</span> <span class="fn">stats</span>(nums):
+    <span class="kw">return</span> <span class="fn">min</span>(nums), <span class="fn">max</span>(nums), <span class="fn">sum</span>(nums)
+
+lo, hi, total = <span class="fn">stats</span>([<span class="nm">3</span>,<span class="nm">1</span>,<span class="nm">7</span>,<span class="nm">2</span>])
+<span class="cm"># lo=1, hi=7, total=13</span>
+
+<span class="cm"># *args — variable number of arguments</span>
+<span class="kw">def</span> <span class="fn">add_all</span>(*args):
+    <span class="kw">return</span> <span class="fn">sum</span>(args)
+
+<span class="fn">add_all</span>(<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">4</span>)  <span class="ar">→ 10</span>`,
+      note:'return ends the function immediately. If no return statement, function returns None automatically.'
+    },
+    {
+      h:'Scope & Lambda',
+      body:`<span class="cm"># Global vs Local scope</span>
+x = <span class="nm">10</span>            <span class="cm"># global variable</span>
+
+<span class="kw">def</span> <span class="fn">foo</span>():
+    x = <span class="nm">20</span>        <span class="cm"># local — different variable!</span>
+    <span class="fn">print</span>(x)      <span class="ar"># prints 20</span>
+
+<span class="fn">foo</span>()
+<span class="fn">print</span>(x)          <span class="ar"># prints 10 — global unchanged</span>
+
+<span class="cm"># global keyword</span>
+<span class="kw">def</span> <span class="fn">bar</span>():
+    <span class="kw">global</span> x
+    x = <span class="nm">99</span>        <span class="cm"># now modifies global x</span>
+
+<span class="cm"># Lambda — anonymous function in one line</span>
+square = <span class="kw">lambda</span> x: x ** <span class="nm">2</span>
+square(<span class="nm">4</span>)         <span class="ar">→ 16</span>
+
+double = <span class="kw">lambda</span> x: x * <span class="nm">2</span>
+<span class="fn">list</span>(<span class="fn">map</span>(double, [<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>]))  <span class="ar">→ [2, 4, 6]</span>
+
+<span class="cm"># sorted with lambda key</span>
+words = [<span class="st">"banana"</span>, <span class="st">"apple"</span>, <span class="st">"cherry"</span>]
+<span class="fn">sorted</span>(words, key=<span class="kw">lambda</span> w: <span class="fn">len</span>(w))
+<span class="ar"># → ['apple', 'banana', 'cherry']</span>`,
+      note:'lambda x: x**2 is shorthand for def f(x): return x**2. Use lambda for short, throwaway functions.'
+    }
+  ]
+},
+{
+  id:'nb3', label:'Notebook 3', title:'Data Structures — Lists, Tuples, Dicts & Sets', color:'#22c55e',
+  sections:[
+    {
+      h:'Lists — Indexing & Slicing',
+      body:`nums = [<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">40</span>, <span class="nm">50</span>]
+<span class="cm">#       0    1    2    3    4    ← positive</span>
+<span class="cm">#      -5   -4   -3   -2   -1   ← negative</span>
+
+<span class="cm"># Single element</span>
+nums[<span class="nm">0</span>]     <span class="ar">→ 10</span>    <span class="cm"># first</span>
+nums[<span class="nm">4</span>]     <span class="ar">→ 50</span>    <span class="cm"># last (positive)</span>
+nums[-<span class="nm">1</span>]    <span class="ar">→ 50</span>    <span class="cm"># last (negative)</span>
+nums[-<span class="nm">2</span>]    <span class="ar">→ 40</span>    <span class="cm"># second from last</span>
+
+<span class="cm"># Slicing: list[start : stop : step]</span>
+<span class="cm">#   start → inclusive</span>
+<span class="cm">#   stop  → EXCLUSIVE (not included!)</span>
+nums[<span class="nm">1</span>:<span class="nm">4</span>]   <span class="ar">→ [20, 30, 40]</span>  <span class="cm"># index 1,2,3</span>
+nums[:<span class="nm">3</span>]    <span class="ar">→ [10, 20, 30]</span>  <span class="cm"># from start, up to index 3</span>
+nums[<span class="nm">2</span>:]    <span class="ar">→ [30, 40, 50]</span>  <span class="cm"># from index 2 to end</span>
+nums[::]     <span class="ar">→ [10,20,30,40,50]</span>  <span class="cm"># whole list</span>
+nums[::<span class="nm">2</span>]   <span class="ar">→ [10, 30, 50]</span>  <span class="cm"># every 2nd</span>
+nums[::-<span class="nm">1</span>]  <span class="ar">→ [50, 40, 30, 20, 10]</span>  <span class="cm"># reversed!</span>
+nums[<span class="nm">1</span>:<span class="nm">4</span>:<span class="nm">2</span>] <span class="ar">→ [20, 40]</span>  <span class="cm"># index 1,3 (step 2)</span>`,
+      note:'RULE: start is INCLUSIVE, stop is EXCLUSIVE. nums[1:4] → index 1, 2, 3 (NOT 4). Negative step reverses direction.'
+    },
+    {
+      h:'List Methods',
+      body:`lst = [<span class="nm">3</span>, <span class="nm">1</span>, <span class="nm">4</span>, <span class="nm">1</span>, <span class="nm">5</span>, <span class="nm">9</span>]
+
+lst.<span class="fn">append</span>(<span class="nm">2</span>)        <span class="cm"># add to END → [3,1,4,1,5,9,2]</span>
+lst.<span class="fn">insert</span>(<span class="nm">0</span>, <span class="nm">99</span>)    <span class="cm"># insert 99 at index 0</span>
+lst.<span class="fn">extend</span>([<span class="nm">7</span>,<span class="nm">8</span>])    <span class="cm"># add multiple items to end</span>
+lst.<span class="fn">remove</span>(<span class="nm">1</span>)        <span class="cm"># removes FIRST occurrence of 1</span>
+lst.<span class="fn">pop</span>()            <span class="cm"># remove & return LAST item</span>
+lst.<span class="fn">pop</span>(<span class="nm">0</span>)           <span class="cm"># remove & return item at index 0</span>
+lst.<span class="fn">sort</span>()           <span class="cm"># sort ascending IN PLACE</span>
+lst.<span class="fn">sort</span>(reverse=<span class="kw">True</span>)  <span class="cm"># sort descending IN PLACE</span>
+lst.<span class="fn">reverse</span>()        <span class="cm"># reverse IN PLACE</span>
+lst.<span class="fn">index</span>(<span class="nm">4</span>)         <span class="ar">→ index of first 4</span>
+lst.<span class="fn">count</span>(<span class="nm">1</span>)         <span class="ar">→ count of 1 in list</span>
+<span class="fn">len</span>(lst)             <span class="ar">→ number of elements</span>
+
+<span class="cm"># sorted() — returns NEW sorted list, original unchanged</span>
+new = <span class="fn">sorted</span>(lst)
+<span class="fn">sorted</span>(lst, reverse=<span class="kw">True</span>)  <span class="cm"># descending</span>
+
+<span class="cm"># Other useful</span>
+<span class="fn">sum</span>(lst)    <span class="cm"># sum of all</span>
+<span class="fn">min</span>(lst)    <span class="cm"># minimum</span>
+<span class="fn">max</span>(lst)    <span class="cm"># maximum</span>`,
+      note:'sort() modifies list IN PLACE and returns None. sorted() returns a NEW list without modifying original.'
+    },
+    {
+      h:'List Comprehension',
+      body:`<span class="cm"># Pattern: [expression for item in iterable if condition]</span>
+
+<span class="cm"># Basic</span>
+squares = [x**<span class="nm">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">5</span>)]
+<span class="ar"># → [0, 1, 4, 9, 16]</span>
+
+<span class="cm"># With condition</span>
+evens = [x <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">10</span>) <span class="kw">if</span> x % <span class="nm">2</span> == <span class="nm">0</span>]
+<span class="ar"># → [0, 2, 4, 6, 8]</span>
+
+<span class="cm"># Transform strings</span>
+words = [<span class="st">"hello"</span>, <span class="st">"world"</span>]
+upper = [w.<span class="fn">upper</span>() <span class="kw">for</span> w <span class="kw">in</span> words]
+<span class="ar"># → ["HELLO", "WORLD"]</span>
+
+<span class="cm"># Equivalent using for loop:</span>
+result = []
+<span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">5</span>):
+    result.<span class="fn">append</span>(x**<span class="nm">2</span>)
+<span class="cm"># → same result, but comprehension is cleaner!</span>
+
+<span class="cm"># Nested comprehension</span>
+matrix = [[i*j <span class="kw">for</span> j <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">3</span>)] <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">3</span>)]
+<span class="ar"># → [[0,0,0],[0,1,2],[0,2,4]]</span>`,
+      note:'List comprehension = shorter and faster than for+append. Common in exams. Know the pattern: [expr for x in iter if cond]'
+    },
+    {
+      h:'Tuples',
+      body:`<span class="cm"># Tuple — like list but IMMUTABLE (can't change)</span>
+t = (<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>)
+
+<span class="cm"># Indexing & slicing — same as lists!</span>
+t[<span class="nm">0</span>]       <span class="ar">→ 10</span>
+t[-<span class="nm">1</span>]      <span class="ar">→ 30</span>
+t[<span class="nm">1</span>:<span class="nm">3</span>]     <span class="ar">→ (20, 30)</span>
+<span class="fn">len</span>(t)     <span class="ar">→ 3</span>
+
+<span class="cm"># Can't modify:</span>
+<span class="cm"># t[0] = 99   ← TypeError!</span>
+
+<span class="cm"># Tuple packing</span>
+coords = (<span class="nm">3</span>, <span class="nm">5</span>)
+
+<span class="cm"># Tuple unpacking</span>
+x, y = coords    <span class="cm"># x=3, y=5</span>
+a, b, c = (<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>)
+
+<span class="cm"># Functions returning multiple values → tuple</span>
+<span class="kw">def</span> <span class="fn">divmod_custom</span>(a, b):
+    <span class="kw">return</span> a // b, a % b   <span class="cm"># returns a tuple</span>
+
+quotient, remainder = <span class="fn">divmod_custom</span>(<span class="nm">10</span>, <span class="nm">3</span>)
+
+<span class="cm"># Single element tuple — needs trailing comma!</span>
+single = (<span class="nm">5</span>,)    <span class="cm"># ← this is a tuple</span>
+not_tuple = (<span class="nm">5</span>)  <span class="cm"># ← this is just int 5</span>`,
+      note:'Tuples are immutable — use when data should not change. (5,) with comma is a tuple; (5) without is just int.'
+    },
+    {
+      h:'Dictionaries',
+      body:`<span class="cm"># Dict — key:value pairs, keys must be unique</span>
+student = {<span class="st">"name"</span>: <span class="st">"Ali"</span>, <span class="st">"age"</span>: <span class="nm">20</span>, <span class="st">"grade"</span>: <span class="st">"A"</span>}
+
+<span class="cm"># Access</span>
+student[<span class="st">"name"</span>]          <span class="ar">→ "Ali"</span>
+student.<span class="fn">get</span>(<span class="st">"age"</span>)       <span class="ar">→ 20</span>
+student.<span class="fn">get</span>(<span class="st">"gpa"</span>, <span class="nm">0.0</span>)  <span class="ar">→ 0.0  (default if missing)</span>
+
+<span class="cm"># Add / Update</span>
+student[<span class="st">"age"</span>] = <span class="nm">21</span>         <span class="cm"># update existing</span>
+student[<span class="st">"city"</span>] = <span class="st">"LHR"</span>    <span class="cm"># add new key</span>
+
+<span class="cm"># Delete</span>
+<span class="kw">del</span> student[<span class="st">"grade"</span>]
+student.<span class="fn">pop</span>(<span class="st">"city"</span>)
+
+<span class="cm"># Check key exists</span>
+<span class="st">"name"</span> <span class="kw">in</span> student   <span class="ar">→ True</span>
+
+<span class="cm"># Iterating</span>
+<span class="kw">for</span> key <span class="kw">in</span> student:                   <span class="cm"># keys</span>
+<span class="kw">for</span> val <span class="kw">in</span> student.<span class="fn">values</span>():         <span class="cm"># values</span>
+<span class="kw">for</span> k, v <span class="kw">in</span> student.<span class="fn">items</span>():         <span class="cm"># both</span>
+
+<span class="cm"># Dict comprehension</span>
+squares = {x: x**<span class="nm">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">5</span>)}
+<span class="ar"># → {0:0, 1:1, 2:4, 3:9, 4:16}</span>`,
+      note:'Use .get() instead of [] when key might not exist — avoids KeyError. dict[key] raises error if missing.'
+    },
+    {
+      h:'Sets',
+      body:`<span class="cm"># Set — unique elements, unordered, no indexing</span>
+s = {<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">3</span>}
+<span class="fn">print</span>(s)     <span class="ar">→ {1, 2, 3}  (duplicates removed!)</span>
+
+<span class="cm"># Create empty set (NOT {} — that's a dict!)</span>
+empty = <span class="fn">set</span>()
+
+<span class="cm"># Modify</span>
+s.<span class="fn">add</span>(<span class="nm">4</span>)         <span class="ar">→ {1, 2, 3, 4}</span>
+s.<span class="fn">remove</span>(<span class="nm">2</span>)      <span class="cm"># error if not found</span>
+s.<span class="fn">discard</span>(<span class="nm">99</span>)    <span class="cm"># NO error if not found</span>
+
+<span class="cm"># Set operations</span>
+a = {<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>}
+b = {<span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>}
+
+a | b    <span class="ar">→ {1,2,3,4,5,6}</span>    <span class="cm"># union</span>
+a & b    <span class="ar">→ {3, 4}</span>            <span class="cm"># intersection</span>
+a - b    <span class="ar">→ {1, 2}</span>            <span class="cm"># difference (in a, not b)</span>
+a ^ b    <span class="ar">→ {1, 2, 5, 6}</span>      <span class="cm"># symmetric diff</span>
+
+<span class="cm"># Membership — sets are O(1) lookup!</span>
+<span class="nm">3</span> <span class="kw">in</span> a    <span class="ar">→ True</span>
+
+<span class="cm"># Remove duplicates from list</span>
+lst = [<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">3</span>]
+unique = <span class="fn">list</span>(<span class="fn">set</span>(lst))   <span class="ar">→ [1, 2, 3]</span>`,
+      note:'{} creates an empty DICT, not a set! Use set() for empty set. Sets have no order so no indexing.'
+    }
+  ]
+},
+{
+  id:'nb4', label:'Notebook 4', title:'NumPy — Arrays, Indexing & Operations', color:'#3b82f6',
+  sections:[
+    {
+      h:'Creating Arrays',
+      body:`<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># From Python list</span>
+a = np.<span class="fn">array</span>([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>])
+
+<span class="cm"># Special constructors</span>
+np.<span class="fn">zeros</span>(<span class="nm">5</span>)              <span class="ar">→ [0. 0. 0. 0. 0.]</span>
+np.<span class="fn">ones</span>((<span class="nm">2</span>,<span class="nm">3</span>))           <span class="ar">→ 2×3 matrix of 1s</span>
+np.<span class="fn">eye</span>(<span class="nm">3</span>)               <span class="ar">→ 3×3 identity matrix</span>
+np.<span class="fn">full</span>((<span class="nm">2</span>,<span class="nm">3</span>), <span class="nm">7</span>)       <span class="ar">→ 2×3 matrix filled with 7</span>
+
+<span class="cm"># Range-like</span>
+np.<span class="fn">arange</span>(<span class="nm">0</span>, <span class="nm">10</span>, <span class="nm">2</span>)     <span class="ar">→ [0 2 4 6 8]</span>
+np.<span class="fn">linspace</span>(<span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">5</span>)   <span class="ar">→ [0.   0.25  0.5  0.75  1. ]</span>
+
+<span class="cm"># Random</span>
+np.random.<span class="fn">rand</span>(<span class="nm">3</span>)       <span class="cm"># 3 floats in [0,1)</span>
+np.random.<span class="fn">randint</span>(<span class="nm">0</span>,<span class="nm">10</span>,<span class="nm">5</span>) <span class="cm"># 5 random ints in [0,10)</span>
+
+<span class="cm"># Array properties</span>
+a.<span class="fn">shape</span>      <span class="ar">→ (5,)       1D</span>
+a.<span class="fn">ndim</span>       <span class="ar">→ 1</span>
+a.<span class="fn">dtype</span>      <span class="ar">→ dtype('int64')</span>
+a.<span class="fn">size</span>       <span class="ar">→ 5         total elements</span>`,
+      note:'np.arange is like Python range() but returns an ndarray. np.linspace gives evenly spaced floats including both endpoints.'
+    },
+    {
+      h:'2D Arrays & Reshape',
+      body:`<span class="cm"># Create 2D array</span>
+m = np.<span class="fn">array</span>([[<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>],
+              [<span class="nm">4</span>,<span class="nm">5</span>,<span class="nm">6</span>],
+              [<span class="nm">7</span>,<span class="nm">8</span>,<span class="nm">9</span>]])
+
+m.<span class="fn">shape</span>    <span class="ar">→ (3, 3)    (rows, cols)</span>
+m.<span class="fn">ndim</span>     <span class="ar">→ 2</span>
+m.<span class="fn">size</span>     <span class="ar">→ 9</span>
+
+<span class="cm"># Reshape — total elements must stay same</span>
+a = np.<span class="fn">arange</span>(<span class="nm">6</span>)      <span class="cm"># [0,1,2,3,4,5]</span>
+a.<span class="fn">reshape</span>(<span class="nm">2</span>, <span class="nm">3</span>)       <span class="ar">→ [[0,1,2],[3,4,5]]</span>
+a.<span class="fn">reshape</span>(<span class="nm">3</span>, <span class="nm">2</span>)       <span class="ar">→ [[0,1],[2,3],[4,5]]</span>
+a.<span class="fn">reshape</span>(<span class="nm">1</span>, -<span class="nm">1</span>)      <span class="cm"># -1 means "figure it out"</span>
+
+<span class="cm"># Flatten — convert to 1D</span>
+m.<span class="fn">flatten</span>()           <span class="ar">→ [1,2,3,4,5,6,7,8,9]</span>
+
+<span class="cm"># Transpose — swap rows & cols</span>
+m.<span class="fn">T</span>
+<span class="cm"># [[1,4,7],</span>
+<span class="cm">#  [2,5,8],</span>
+<span class="cm">#  [3,6,9]]</span>`,
+      note:'shape always gives (rows, cols). -1 in reshape means "infer this dimension". 6 elements can be (2,3) or (3,2) or (1,6).'
+    },
+    {
+      h:'Indexing & Slicing — KEY TOPIC',
+      body:`a = np.<span class="fn">array</span>([<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">40</span>, <span class="nm">50</span>])
+
+<span class="cm"># 1D — same as Python lists</span>
+a[<span class="nm">0</span>]      <span class="ar">→ 10</span>
+a[-<span class="nm">1</span>]     <span class="ar">→ 50</span>
+a[<span class="nm">1</span>:<span class="nm">4</span>]    <span class="ar">→ [20 30 40]</span>
+a[::<span class="nm">2</span>]    <span class="ar">→ [10 30 50]</span>
+
+<span class="cm"># 2D indexing — m[row, col]  ← key syntax!</span>
+m = np.<span class="fn">array</span>([[<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>],
+              [<span class="nm">4</span>,<span class="nm">5</span>,<span class="nm">6</span>],
+              [<span class="nm">7</span>,<span class="nm">8</span>,<span class="nm">9</span>]])
+
+m[<span class="nm">0</span>, <span class="nm">0</span>]    <span class="ar">→ 1</span>     <span class="cm"># row 0, col 0</span>
+m[<span class="nm">1</span>, <span class="nm">2</span>]    <span class="ar">→ 6</span>     <span class="cm"># row 1, col 2</span>
+m[<span class="nm">2</span>, -<span class="nm">1</span>]   <span class="ar">→ 9</span>     <span class="cm"># row 2, last col</span>
+
+<span class="cm"># 2D slicing</span>
+m[<span class="nm">0</span>, :]    <span class="ar">→ [1, 2, 3]</span>      <span class="cm"># entire row 0</span>
+m[:, <span class="nm">1</span>]    <span class="ar">→ [2, 5, 8]</span>      <span class="cm"># entire col 1</span>
+m[<span class="nm">0</span>:<span class="nm">2</span>, <span class="nm">1</span>:<span class="nm">3</span>] <span class="ar">→ [[2,3],[5,6]]</span>  <span class="cm"># submatrix</span>
+m[:, :]    <span class="ar">→ whole matrix</span>`,
+      note:'m[row, col] uses comma for 2D. m[:, 0] = ALL rows, column 0. m[0, :] = row 0, ALL columns.'
+    },
+    {
+      h:'Boolean & Fancy Indexing',
+      body:`a = np.<span class="fn">array</span>([<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">40</span>, <span class="nm">50</span>])
+
+<span class="cm"># Boolean mask</span>
+mask = a > <span class="nm">25</span>
+<span class="cm"># → [False, False, True, True, True]</span>
+
+a[mask]              <span class="ar">→ [30, 40, 50]</span>
+a[a > <span class="nm">25</span>]            <span class="ar">→ [30, 40, 50]</span>  <span class="cm"># shorthand</span>
+a[a % <span class="nm">20</span> == <span class="nm">0</span>]       <span class="ar">→ [20, 40]</span>
+
+<span class="cm"># Multiple conditions (use & and |)</span>
+a[(a > <span class="nm">15</span>) & (a < <span class="nm">45</span>)]   <span class="ar">→ [20, 30, 40]</span>
+
+<span class="cm"># Fancy indexing — pick specific indices</span>
+a[[<span class="nm">0</span>, <span class="nm">2</span>, <span class="nm">4</span>]]         <span class="ar">→ [10, 30, 50]</span>
+
+<span class="cm"># 2D boolean</span>
+m = np.<span class="fn">array</span>([[<span class="nm">1</span>,<span class="nm">2</span>],[<span class="nm">3</span>,<span class="nm">4</span>],[<span class="nm">5</span>,<span class="nm">6</span>]])
+m[m > <span class="nm">3</span>]             <span class="ar">→ [4, 5, 6]  (flattened!)</span>
+
+<span class="cm"># np.where — conditional element selection</span>
+np.<span class="fn">where</span>(a > <span class="nm">25</span>, a, <span class="nm">0</span>)  <span class="ar">→ [0, 0, 30, 40, 50]</span>
+<span class="cm"># if condition → a, else → 0</span>`,
+      note:'Boolean indexing on 2D arrays returns FLATTENED 1D result. np.where(cond, a, b) replaces elements like an if-else.'
+    },
+    {
+      h:'Array Math & Statistics',
+      body:`a = np.<span class="fn">array</span>([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>])
+b = np.<span class="fn">array</span>([<span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>])
+
+<span class="cm"># Element-wise (NOT like Python lists!)</span>
+a + b    <span class="ar">→ [5, 7, 9]</span>
+a * b    <span class="ar">→ [4, 10, 18]</span>
+a ** <span class="nm">2</span>   <span class="ar">→ [1, 4, 9]</span>
+a + <span class="nm">10</span>   <span class="ar">→ [11, 12, 13]</span>  <span class="cm"># broadcasting scalar</span>
+a / b    <span class="ar">→ [0.25, 0.4, 0.5]</span>
+
+<span class="cm"># Universal functions</span>
+np.<span class="fn">sqrt</span>(a)      <span class="ar">→ [1., 1.41, 1.73]</span>
+np.<span class="fn">abs</span>([-<span class="nm">1</span>,-<span class="nm">2</span>]) <span class="ar">→ [1, 2]</span>
+np.<span class="fn">exp</span>(a)       <span class="cm"># e^x for each element</span>
+
+<span class="cm"># Statistics</span>
+np.<span class="fn">sum</span>(a)        <span class="ar">→ 6</span>
+np.<span class="fn">mean</span>(a)       <span class="ar">→ 2.0</span>
+np.<span class="fn">std</span>(a)        <span class="cm"># standard deviation</span>
+np.<span class="fn">min</span>(a)        <span class="ar">→ 1</span>
+np.<span class="fn">max</span>(a)        <span class="ar">→ 3</span>
+np.<span class="fn">argmin</span>(a)     <span class="ar">→ 0  (index of min)</span>
+np.<span class="fn">argmax</span>(a)     <span class="ar">→ 2  (index of max)</span>
+
+<span class="cm"># 2D axis-based operations</span>
+m = np.<span class="fn">array</span>([[<span class="nm">1</span>,<span class="nm">2</span>],[<span class="nm">3</span>,<span class="nm">4</span>]])
+np.<span class="fn">sum</span>(m, axis=<span class="nm">0</span>)   <span class="ar">→ [4, 6]</span>   <span class="cm"># sum per COLUMN</span>
+np.<span class="fn">sum</span>(m, axis=<span class="nm">1</span>)   <span class="ar">→ [3, 7]</span>   <span class="cm"># sum per ROW</span>`,
+      note:'axis=0 goes DOWN rows → gives column results. axis=1 goes ACROSS cols → gives row results. NumPy operations are element-wise by default.'
+    }
+  ]
+},
+{
+  id:'nb5', label:'Notebook 5', title:'Pandas — Series, DataFrames & Indexing', color:'#ec4899',
+  sections:[
+    {
+      h:'Series',
+      body:`<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># Create Series from list (auto-index 0,1,2...)</span>
+s = pd.<span class="fn">Series</span>([<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">40</span>])
+
+<span class="cm"># Custom index</span>
+s = pd.<span class="fn">Series</span>([<span class="nm">10</span>,<span class="nm">20</span>,<span class="nm">30</span>], index=[<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>])
+s[<span class="st">"a"</span>]       <span class="ar">→ 10</span>
+
+<span class="cm"># From dict — keys become index</span>
+d = {<span class="st">"name"</span>: <span class="st">"Ali"</span>, <span class="st">"age"</span>: <span class="nm">20</span>}
+s = pd.<span class="fn">Series</span>(d)
+
+<span class="cm"># Scalar — fill all</span>
+s = pd.<span class="fn">Series</span>(<span class="nm">5</span>, index=[<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>])
+<span class="ar"># a    5 / b    5 / c    5</span>
+
+<span class="cm"># Key attributes</span>
+s.<span class="fn">values</span>     <span class="cm"># numpy array of values</span>
+s.<span class="fn">index</span>      <span class="cm"># index labels</span>
+s.<span class="fn">dtype</span>      <span class="cm"># data type</span>
+s.<span class="fn">name</span>       <span class="cm"># name of the Series</span>
+<span class="fn">len</span>(s)       <span class="cm"># number of elements</span>
+
+<span class="cm"># Series operations</span>
+s * <span class="nm">2</span>        <span class="cm"># element-wise multiply</span>
+s[s > <span class="nm">10</span>]   <span class="cm"># boolean filtering</span>`,
+      note:'A Series is a 1D labeled array. Think of it as ONE column of a spreadsheet with row labels.'
+    },
+    {
+      h:'DataFrame — Creation',
+      body:`<span class="cm"># From dict of lists (most common!)</span>
+df = pd.<span class="fn">DataFrame</span>({
+    <span class="st">"Name"</span>:  [<span class="st">"Ali"</span>,  <span class="st">"Sara"</span>, <span class="st">"Ahmed"</span>],
+    <span class="st">"Age"</span>:   [<span class="nm">20</span>,     <span class="nm">22</span>,     <span class="nm">21</span>],
+    <span class="st">"Score"</span>: [<span class="nm">85</span>,     <span class="nm">90</span>,     <span class="nm">78</span>]
+})
+<span class="cm">#   Name   Age  Score</span>
+<span class="cm"># 0  Ali    20    85</span>
+<span class="cm"># 1  Sara   22    90</span>
+<span class="cm"># 2  Ahmed  21    78</span>
+
+<span class="cm"># From list of dicts</span>
+data = [{<span class="st">"Name"</span>:<span class="st">"Ali"</span>,<span class="st">"Age"</span>:<span class="nm">20</span>},
+        {<span class="st">"Name"</span>:<span class="st">"Sara"</span>,<span class="st">"Age"</span>:<span class="nm">22</span>}]
+df = pd.<span class="fn">DataFrame</span>(data)
+
+<span class="cm"># Read from CSV file</span>
+df = pd.<span class="fn">read_csv</span>(<span class="st">"data.csv"</span>)
+df = pd.<span class="fn">read_csv</span>(<span class="st">"data.csv"</span>, index_col=<span class="nm">0</span>)
+
+<span class="cm"># Key attributes</span>
+df.<span class="fn">shape</span>      <span class="ar">→ (3, 3)   (rows, cols)</span>
+df.<span class="fn">columns</span>   <span class="ar">→ Index(['Name','Age','Score'])</span>
+df.<span class="fn">index</span>     <span class="ar">→ RangeIndex(0, 3)</span>
+df.<span class="fn">dtypes</span>    <span class="cm"># dtype of each column</span>
+df.<span class="fn">info</span>()    <span class="cm"># structure summary</span>
+df.<span class="fn">describe</span>() <span class="cm"># stats for numeric cols</span>`,
+      note:'DataFrame = a spreadsheet table. Columns are Series. Each row has an index (default 0,1,2...).'
+    },
+    {
+      h:'Selecting Columns & Rows',
+      body:`<span class="cm"># ── Select COLUMNS ──────────────────────</span>
+
+<span class="cm"># Single column → returns Series</span>
+df[<span class="st">"Name"</span>]             <span class="ar">→ Series of names</span>
+df.<span class="fn">Name</span>                <span class="cm"># dot notation (same)</span>
+
+<span class="cm"># Multiple columns → returns DataFrame</span>
+df[[<span class="st">"Name"</span>, <span class="st">"Score"</span>]]
+
+<span class="cm"># ── Select ROWS ─────────────────────────</span>
+
+<span class="cm"># .iloc → integer POSITION (like Python lists)</span>
+df.<span class="fn">iloc</span>[<span class="nm">0</span>]          <span class="cm"># first row</span>
+df.<span class="fn">iloc</span>[-<span class="nm">1</span>]         <span class="cm"># last row</span>
+df.<span class="fn">iloc</span>[<span class="nm">0</span>:<span class="nm">2</span>]        <span class="cm"># rows 0,1  (stop EXCLUSIVE)</span>
+df.<span class="fn">iloc</span>[[<span class="nm">0</span>,<span class="nm">2</span>]]      <span class="cm"># rows 0 and 2</span>
+
+<span class="cm"># .loc → LABEL (index value)</span>
+df.<span class="fn">loc</span>[<span class="nm">0</span>]           <span class="cm"># row with index label 0</span>
+df.<span class="fn">loc</span>[<span class="nm">0</span>:<span class="nm">2</span>]         <span class="cm"># rows 0,1,2  (stop INCLUSIVE!)</span>
+df.<span class="fn">loc</span>[[<span class="nm">0</span>,<span class="nm">2</span>]]       <span class="cm"># rows with labels 0 and 2</span>
+
+<span class="cm"># ── Select BOTH row and column ──────────</span>
+df.<span class="fn">loc</span>[<span class="nm">0</span>, <span class="st">"Name"</span>]         <span class="ar">→ "Ali"</span>
+df.<span class="fn">loc</span>[:<span class="nm">2</span>, <span class="st">"Score"</span>]       <span class="cm"># rows 0-2, Score col</span>
+df.<span class="fn">iloc</span>[<span class="nm">0</span>, <span class="nm">1</span>]             <span class="ar">→ 20  (row 0, col 1)</span>
+df.<span class="fn">iloc</span>[<span class="nm">0</span>:<span class="nm">2</span>, <span class="nm">1</span>:<span class="nm">3</span>]          <span class="cm"># rows 0-1, cols 1-2</span>`,
+      note:'BIGGEST EXAM TRAP: loc stop is INCLUSIVE (loc[0:2] = rows 0,1,2). iloc stop is EXCLUSIVE (iloc[0:2] = rows 0,1 only).'
+    },
+    {
+      h:'loc vs iloc — The Critical Difference',
+      body:`<span class="cm"># Set a custom index to see the difference clearly</span>
+df = pd.<span class="fn">DataFrame</span>({
+    <span class="st">"Name"</span>:  [<span class="st">"Ali"</span>, <span class="st">"Sara"</span>, <span class="st">"Ahmed"</span>],
+    <span class="st">"Score"</span>: [<span class="nm">85</span>, <span class="nm">90</span>, <span class="nm">78</span>]
+}, index=[<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>])   <span class="cm"># index is 10,20,30</span>
+
+<span class="cm"># .loc uses the LABEL (10, 20, 30)</span>
+df.<span class="fn">loc</span>[<span class="nm">10</span>]           <span class="ar">→ row where index==10  (Ali)</span>
+df.<span class="fn">loc</span>[<span class="nm">10</span>:<span class="nm">20</span>]        <span class="ar">→ rows with index 10 AND 20 (INCLUSIVE)</span>
+df.<span class="fn">loc</span>[<span class="nm">10</span>, <span class="st">"Name"</span>]   <span class="ar">→ "Ali"</span>
+
+<span class="cm"># .iloc uses the POSITION (0, 1, 2)</span>
+df.<span class="fn">iloc</span>[<span class="nm">0</span>]           <span class="ar">→ first row (Ali) — position 0</span>
+df.<span class="fn">iloc</span>[<span class="nm">0</span>:<span class="nm">2</span>]         <span class="ar">→ rows at position 0,1 only (EXCLUSIVE stop)</span>
+df.<span class="fn">iloc</span>[<span class="nm">0</span>, <span class="nm">1</span>]        <span class="ar">→ 85  (position row 0, col 1)</span>
+
+<span class="cm">┌──────────┬──────────────────┬─────────────────────┐</span>
+<span class="cm">│          │      .loc        │      .iloc          │</span>
+<span class="cm">├──────────┼──────────────────┼─────────────────────┤</span>
+<span class="cm">│ Based on │   Index LABELS   │ Integer POSITIONS   │</span>
+<span class="cm">│ Columns  │   Column NAMES   │ Column NUMBERS      │</span>
+<span class="cm">│ Stop     │   INCLUSIVE      │ EXCLUSIVE           │</span>
+<span class="cm">└──────────┴──────────────────┴─────────────────────┘</span>`,
+      note:'When index is 0,1,2 (default), loc[0:2] and iloc[0:2] look similar BUT give different results (3 rows vs 2 rows)!'
+    },
+    {
+      h:'Filtering (Boolean Indexing)',
+      body:`df = pd.<span class="fn">DataFrame</span>({
+    <span class="st">"Name"</span>:  [<span class="st">"Ali"</span>,<span class="st">"Sara"</span>,<span class="st">"Ahmed"</span>,<span class="st">"Zara"</span>],
+    <span class="st">"Age"</span>:   [<span class="nm">20</span>, <span class="nm">22</span>, <span class="nm">21</span>, <span class="nm">19</span>],
+    <span class="st">"Score"</span>: [<span class="nm">85</span>, <span class="nm">90</span>, <span class="nm">78</span>, <span class="nm">95</span>]
+})
+
+<span class="cm"># Single condition</span>
+df[df[<span class="st">"Age"</span>] > <span class="nm">20</span>]
+df[df[<span class="st">"Score"</span>] >= <span class="nm">85</span>]
+
+<span class="cm"># Multiple conditions — MUST use & | not and/or</span>
+df[(df[<span class="st">"Age"</span>] > <span class="nm">20</span>) & (df[<span class="st">"Score"</span>] >= <span class="nm">85</span>)]
+df[(df[<span class="st">"Age"</span>] == <span class="nm">20</span>) | (df[<span class="st">"Score"</span>] > <span class="nm">90</span>)]
+
+<span class="cm"># String filtering</span>
+df[df[<span class="st">"Name"</span>] == <span class="st">"Ali"</span>]
+df[df[<span class="st">"Name"</span>].<span class="fn">str</span>.<span class="fn">startswith</span>(<span class="st">"A"</span>)]
+df[df[<span class="st">"Name"</span>].<span class="fn">str</span>.<span class="fn">contains</span>(<span class="st">"a"</span>)]
+df[df[<span class="st">"Name"</span>].<span class="fn">isin</span>([<span class="st">"Ali"</span>, <span class="st">"Sara"</span>])]
+
+<span class="cm"># Filter + select specific columns</span>
+df[df[<span class="st">"Age"</span>] > <span class="nm">20</span>][[<span class="st">"Name"</span>, <span class="st">"Score"</span>]]
+
+<span class="cm"># .query() — alternative cleaner syntax</span>
+df.<span class="fn">query</span>(<span class="st">"Age > 20 and Score >= 85"</span>)`,
+      note:'MUST wrap each condition in () when using & or |. Using Python "and"/"or" will give ValueError!'
+    },
+    {
+      h:'DataFrame Operations',
+      body:`<span class="cm"># ── Add / Modify columns ─────────────────</span>
+df[<span class="st">"Pass"</span>] = df[<span class="st">"Score"</span>] >= <span class="nm">80</span>          <span class="cm"># add bool col</span>
+df[<span class="st">"Grade_Num"</span>] = df[<span class="st">"Score"</span>] / <span class="nm">10</span>     <span class="cm"># add calc col</span>
+
+<span class="cm"># ── Drop ─────────────────────────────────</span>
+df.<span class="fn">drop</span>(<span class="st">"Pass"</span>, axis=<span class="nm">1</span>, inplace=<span class="kw">True</span>)   <span class="cm"># drop column</span>
+df.<span class="fn">drop</span>(<span class="nm">0</span>, axis=<span class="nm">0</span>)                        <span class="cm"># drop row</span>
+
+<span class="cm"># ── Rename ───────────────────────────────</span>
+df.<span class="fn">rename</span>(columns={<span class="st">"Score"</span>: <span class="st">"Marks"</span>}, inplace=<span class="kw">True</span>)
+
+<span class="cm"># ── Sort ─────────────────────────────────</span>
+df.<span class="fn">sort_values</span>(<span class="st">"Age"</span>)                     <span class="cm"># ascending</span>
+df.<span class="fn">sort_values</span>(<span class="st">"Score"</span>, ascending=<span class="kw">False</span>) <span class="cm"># descending</span>
+df.<span class="fn">sort_values</span>([<span class="st">"Age"</span>,<span class="st">"Score"</span>])          <span class="cm"># multi-sort</span>
+
+<span class="cm"># ── Index operations ─────────────────────</span>
+df.<span class="fn">set_index</span>(<span class="st">"Name"</span>, inplace=<span class="kw">True</span>)      <span class="cm"># set col as index</span>
+df.<span class="fn">reset_index</span>(drop=<span class="kw">False</span>, inplace=<span class="kw">True</span>) <span class="cm"># restore default</span>
+
+<span class="cm"># ── Preview ──────────────────────────────</span>
+df.<span class="fn">head</span>()           <span class="cm"># first 5 rows</span>
+df.<span class="fn">head</span>(<span class="nm">3</span>)          <span class="cm"># first 3 rows</span>
+df.<span class="fn">tail</span>(<span class="nm">2</span>)          <span class="cm"># last 2 rows</span>
+df.<span class="fn">sample</span>(<span class="nm">3</span>)        <span class="cm"># 3 random rows</span>`,
+      note:'inplace=True modifies the DataFrame directly and returns None. Without it, a new DataFrame is returned and the original is unchanged.'
+    }
+  ]
+}
+];
+
+// ══════════════════════════════════════════════════════════
+// QUIZ DATA
+// ══════════════════════════════════════════════════════════
+const QUIZ = [
+  { q:"What does nums[1:4] return for nums = [10, 20, 30, 40, 50]?", opts:["[10, 20, 30]","[20, 30, 40]","[20, 30, 40, 50]","[10, 20, 30, 40]"], ans:1, ex:"Slicing: start is inclusive, stop is EXCLUSIVE. Indices 1,2,3 → [20, 30, 40]." },
+  { q:"What is 7 // 2 in Python?", opts:["3.5","3","4","3.0"], ans:1, ex:"// is floor division — divides and drops the decimal. 7/2=3.5, floor → 3 (int)." },
+  { q:"What does nums[::-1] return for nums = [1,2,3,4,5]?", opts:["[5]","[5,4,3,2,1]","[1,3,5]","[2,4]"], ans:1, ex:"step = -1 means traverse backwards from end to start — reverses the list." },
+  { q:"For m = np.array([[1,2,3],[4,5,6],[7,8,9]]), what is m[:, 1]?", opts:["[1,2,3]","[2,5,8]","[4,5,6]","[2,3]"], ans:1, ex:"m[rows, cols]. : = all rows. col 1 = second column → [2, 5, 8]." },
+  { q:"What is the key difference between df.loc and df.iloc?", opts:["No difference","loc uses labels (inclusive stop), iloc uses integer positions (exclusive stop)","iloc uses labels, loc uses integers","Both use integer positions"], ans:1, ex:"loc = label-based with INCLUSIVE stop. iloc = position-based with EXCLUSIVE stop (like Python slicing)." },
+  { q:"df[(df['Age']>20) & (df['Score']>=85)] uses & instead of 'and'. Why?", opts:["& is faster","Pandas requires & for element-wise comparison on Series; 'and' raises ValueError","They're identical","& works on integers only"], ans:1, ex:"'and' is for single booleans. & applies element-wise to boolean Series. Always use & | with pandas conditions in parentheses." },
+  { q:"What does list.sort() return?", opts:["Sorted list","None (sorts in place)","New sorted list","Index of sorted elements"], ans:1, ex:"sort() modifies the list IN PLACE and returns None. Use sorted() if you want a new list." },
+  { q:"np.sum([[1,2],[3,4]], axis=0) = ?", opts:["[3,7]","[4,6]","[1,2,3,4]","10"], ans:1, ex:"axis=0 sums DOWN rows (per column). Col0: 1+3=4, Col1: 2+4=6 → [4,6]." },
+  { q:"How many elements are in the set {1, 2, 2, 3, 3, 3}?", opts:["6","3","4","2"], ans:1, ex:"Sets store only UNIQUE values. All duplicates removed → {1,2,3} has 3 elements." },
+  { q:"What does bool('') return?", opts:["True","False","'' (empty string)","Error"], ans:1, ex:"Empty string is falsy. bool('') → False. bool('anything') → True." },
+  { q:"df.iloc[1:3] returns how many rows?", opts:["3","2","1","4"], ans:1, ex:"iloc uses exclusive stop like Python. 1:3 → positions 1 and 2 only → 2 rows." },
+  { q:"What does dict.get('missing_key', 'default') return if key doesn't exist?", opts:["Raises KeyError","Returns None","Returns 'default'","Adds key to dict"], ans:2, ex:".get() NEVER raises KeyError. Returns the default value provided as second argument." },
+  { q:"a = np.arange(6).reshape(2,3). What is a.shape?", opts:["(6,)","(2,3)","(3,2)","(1,6)"], ans:1, ex:"arange(6) = [0,1,2,3,4,5] shape (6,). reshape(2,3) → (2,3): 2 rows, 3 cols." },
+  { q:"In a for loop, 'continue' does what?", opts:["Exits the loop","Skips rest of current iteration, continues to next","Pauses execution","Re-runs current iteration"], ans:1, ex:"continue skips the remaining code in the CURRENT iteration only and moves to the next one." },
+  { q:"What does df.set_index('Name', inplace=True) do?", opts:["Creates a copy","Makes 'Name' column the row index and modifies df directly","Sorts by Name","Resets the index"], ans:1, ex:"set_index makes that column the new row index. inplace=True means it modifies the DataFrame directly." },
+  { q:"For s = pd.Series([10,20,30], index=['a','b','c']), what is s['b']?", opts:["10","20","30","Error"], ans:1, ex:"Series uses label-based access with []. s['b'] → value at label 'b' → 20." },
+  { q:"What is the output of: [x**2 for x in range(4) if x%2==0]?", opts:["[0,1,4,9]","[0,4]","[1,9]","[4,16]"], ans:1, ex:"range(4) = 0,1,2,3. Even numbers (x%2==0): 0,2. Squared: 0²=0, 2²=4 → [0,4]." },
+  { q:"np.linspace(0, 10, 5) generates how many values?", opts:["10","4","5","6"], ans:2, ex:"linspace(start, stop, num) → 'num' evenly spaced values INCLUSIVE of both endpoints. num=5 → 5 values." },
+  { q:"What does df.drop('Age', axis=1) do?", opts:["Drops row named 'Age'","Drops the 'Age' column","Resets the DataFrame","Raises an error"], ans:1, ex:"axis=1 means column. axis=0 means row. So this drops the 'Age' column and returns a new DataFrame." },
+  { q:"Single-element tuple: which is correct?", opts:["t = (5)","t = (5,)","t = tuple[5]","t = {5}"], ans:1, ex:"(5) is just int 5 in parentheses. A trailing comma (5,) makes it a real single-element tuple." },
+];
+
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+let curTopicIdx = 0, curSection = 0;
+let quizIdx = 0, score = 0, chosen = null, quizDone = false;
+let quizOrder = [...QUIZ].sort(()=>Math.random()-.5);
+
+// ══════════════════════════════════════════════════════════
+// TAB SWITCHING
+// ══════════════════════════════════════════════════════════
+function showTab(t) {
+  ['guide','cheatsheet','quiz'].forEach(id=>{
+    document.getElementById('tab-'+id).classList.toggle('active', id===t);
+  });
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active', ['guide','cheatsheet','quiz'][i]===t);
+  });
+  if(t==='quiz' && !quizDone) renderQuiz();
+  if(t==='cheatsheet') renderCheatsheet();
+}
+
+// ══════════════════════════════════════════════════════════
+// GUIDE RENDER
+// ══════════════════════════════════════════════════════════
+function renderSidebar() {
+  const sb = document.getElementById('sidebar');
+  sb.innerHTML = TOPICS.map((t,i)=>`
+    <button class="nb-btn ${i===curTopicIdx?'active':''}"
+      style="${i===curTopicIdx?`border-left-color:${t.color};`:''}color:${i===curTopicIdx?'#fff':''}"
+      onclick="selectTopic(${i})">
+      <div class="nb-label" style="color:${t.color}">${t.label}</div>
+      <div class="nb-title">${t.title.split('—')[0].trim()}</div>
+    </button>
+  `).join('');
+}
+
+function renderMain() {
+  const t = TOPICS[curTopicIdx];
+  const s = t.sections[curSection];
+  const main = document.getElementById('main-content');
+  main.innerHTML = `
+    <div class="topic-header">
+      <div class="topic-nb-label" style="color:${t.color}">${t.label}</div>
+      <div class="topic-title">${t.title}</div>
+    </div>
+    <div class="section-pills">
+      ${t.sections.map((sec,i)=>`
+        <button class="pill-btn ${i===curSection?'active':''}"
+          style="${i===curSection?`border-color:${t.color};color:${t.color};background:${t.color}18`:''}"
+          onclick="selectSection(${i})">${sec.h.split('—')[0].split('(')[0].trim()}</button>
+      `).join('')}
+    </div>
+    <div class="section-heading" style="border-color:${t.color}">${s.h}</div>
+    <div class="code-block">${s.body}</div>
+    <div class="key-note" style="background:${t.color}12;border-color:${t.color}">
+      <span class="kn-label" style="color:${t.color}">⚡ Key Note:</span>${s.note}
+    </div>
+    <div class="nav-footer">
+      <button class="nav-btn" onclick="prevSection()" ${curSection===0&&curTopicIdx===0?'disabled':''}>← Prev</button>
+      <span class="nav-progress">${curSection+1} / ${t.sections.length}</span>
+      <button class="nav-btn primary" style="border-color:${t.color};color:${t.color}"
+        onclick="nextSection()">
+        ${curSection<t.sections.length-1?'Next →':(curTopicIdx<TOPICS.length-1?'Next Notebook →':'Done ✓')}
+      </button>
+    </div>
+  `;
+  main.scrollTop = 0;
+}
+
+function selectTopic(i) { curTopicIdx=i; curSection=0; renderSidebar(); renderMain(); }
+function selectSection(i) { curSection=i; renderMain(); }
+function nextSection() {
+  if(curSection<TOPICS[curTopicIdx].sections.length-1){ curSection++; renderMain(); }
+  else if(curTopicIdx<TOPICS.length-1){ curTopicIdx++; curSection=0; renderSidebar(); renderMain(); }
+}
+function prevSection() {
+  if(curSection>0){ curSection--; renderMain(); }
+  else if(curTopicIdx>0){ curTopicIdx--; curSection=TOPICS[curTopicIdx].sections.length-1; renderSidebar(); renderMain(); }
+}
+
+// ══════════════════════════════════════════════════════════
+// QUIZ RENDER
+// ══════════════════════════════════════════════════════════
+function renderQuiz() {
+  const wrap = document.getElementById('quiz-wrap');
+  if(quizDone) {
+    const pct = Math.round(score/quizOrder.length*100);
+    wrap.innerHTML = `
+      <div class="results">
+        <div class="emoji">${score>=18?'🏆':score>=14?'💪':score>=10?'📈':'📚'}</div>
+        <div class="score-label">Your score</div>
+        <div class="score">${score}<span style="font-size:24px;color:var(--muted)">/${quizOrder.length}</span></div>
+        <div class="score-msg">${pct}% — ${score>=18?'Excellent! You\'re exam ready! 🎯':score>=14?'Great job! Review the ones you missed.':score>=10?'Good progress! Keep studying the guide.':'Don\'t worry, go through the study guide and try again!'}</div>
+        <button class="restart-btn" onclick="restartQuiz()">Try Again 🔄</button>
+        <br><br>
+        <button class="restart-btn" style="background:var(--surface);color:var(--text);border:1px solid var(--border)" onclick="showTab('guide')">Back to Study Guide</button>
+      </div>`;
+    return;
+  }
+  const q = quizOrder[quizIdx];
+  const letters = 'ABCD';
+  wrap.innerHTML = `
+    <div class="quiz-meta">
+      <span>Question ${quizIdx+1} of ${quizOrder.length}</span>
+      <span>Score: ${score} / ${quizIdx}</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${quizIdx/quizOrder.length*100}%"></div></div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="options" id="opts">
+      ${q.opts.map((o,i)=>`
+        <button class="opt-btn" id="opt-${i}" onclick="pickAnswer(${i})">
+          <span class="opt-letter">${letters[i]}.</span>${o}
+        </button>
+      `).join('')}
+    </div>
+    <div id="explain"></div>
+    <div id="next-area"></div>
+  `;
+}
+
+function pickAnswer(i) {
+  if(chosen!==null) return;
+  chosen=i;
+  const q=quizOrder[quizIdx];
+  if(i===q.ans) score++;
+  document.querySelectorAll('.opt-btn').forEach(b=>b.classList.add('locked'));
+  document.getElementById('opt-'+q.ans).classList.add('correct');
+  if(i!==q.ans) document.getElementById('opt-'+i).classList.add('wrong');
+  document.getElementById('explain').innerHTML=`
+    <div class="explain-box ${i===q.ans?'good':'bad'}">
+      <span class="explain-label" style="color:${i===q.ans?'#22c55e':'#ef4444'}">${i===q.ans?'✓ Correct!':'✗ Incorrect.'}</span>
+      ${q.ex}
+    </div>`;
+  document.getElementById('next-area').innerHTML=`
+    <button class="next-btn" onclick="nextQuestion()">
+      ${quizIdx+1>=quizOrder.length?'See Results 🏆':'Next Question →'}
+    </button>`;
+}
+
+function nextQuestion() {
+  if(quizIdx+1>=quizOrder.length){ quizDone=true; renderQuiz(); return; }
+  quizIdx++; chosen=null; renderQuiz();
+}
+
+function restartQuiz() {
+  quizIdx=0; score=0; chosen=null; quizDone=false;
+  quizOrder=[...QUIZ].sort(()=>Math.random()-.5);
+  renderQuiz();
+}
+
+// ══════════════════════════════════════════════════════════
+// CHEATSHEET RENDER
+// ══════════════════════════════════════════════════════════
+const CHEAT = [
+  { title:'Python Operators', color:'#f97316', rows:[
+    ['+  -  *  /','basic math (/ always float)'],
+    ['//','floor division (int result)'],
+    ['%','modulus / remainder'],
+    ['**','exponentiation'],
+    ['==  !=  >  <  >=  <=','comparison (return bool)'],
+    ['and  or  not','logical operators'],
+    ['+=  -=  *=','augmented assignment'],
+  ]},
+  { title:'String Methods', color:'#f97316', rows:[
+    ['s.upper() / s.lower()','change case'],
+    ['s.strip()','remove whitespace ends'],
+    ['s.split(",")','split to list'],
+    ['s.replace(a,b)','replace substring'],
+    ['s.find("x")','index of first "x"'],
+    ['s.startswith("x")','bool check'],
+    ['f"Hello {name}"','f-string formatting'],
+  ]},
+  { title:'List Slicing', color:'#22c55e', rows:[
+    ['lst[i]','single element (0-based)'],
+    ['lst[-1]','last element'],
+    ['lst[a:b]','index a to b-1 (exclusive stop)'],
+    ['lst[:b]','start to b-1'],
+    ['lst[a:]','a to end'],
+    ['lst[::n]','every nth element'],
+    ['lst[::-1]','reversed'],
+  ]},
+  { title:'List Methods', color:'#22c55e', rows:[
+    ['lst.append(x)','add to end'],
+    ['lst.insert(i,x)','insert at index i'],
+    ['lst.remove(x)','remove first x'],
+    ['lst.pop()','remove & return last'],
+    ['lst.sort()','sort in place (None)'],
+    ['sorted(lst)','return new sorted list'],
+    ['lst.count(x) / len(lst)','count / length'],
+  ]},
+  { title:'Dict & Set', color:'#22c55e', rows:[
+    ['d[key]','access (KeyError if missing)'],
+    ['d.get(k, default)','safe access'],
+    ['d[k] = v','add / update'],
+    ['del d[k]','delete key'],
+    ['k in d','membership check'],
+    ['d.keys() / .values() / .items()','iterate'],
+    ['a|b  a&b  a-b  a^b','set operations'],
+  ]},
+  { title:'NumPy Array Creation', color:'#3b82f6', rows:[
+    ['np.array([1,2,3])','from list'],
+    ['np.zeros(n) / np.ones(n)','fill arrays'],
+    ['np.eye(n)','identity matrix'],
+    ['np.arange(s,e,step)','like range()'],
+    ['np.linspace(s,e,n)','n evenly spaced'],
+    ['arr.reshape(r,c)','change shape'],
+    ['arr.T','transpose'],
+  ]},
+  { title:'NumPy Indexing', color:'#3b82f6', rows:[
+    ['a[i]','1D element'],
+    ['a[start:stop:step]','1D slice (stop exclusive)'],
+    ['m[row, col]','2D element'],
+    ['m[:, c]','all rows, col c'],
+    ['m[r, :]','row r, all cols'],
+    ['a[a > 5]','boolean indexing'],
+    ['a[[0,2,4]]','fancy indexing'],
+  ]},
+  { title:'NumPy Math', color:'#3b82f6', rows:[
+    ['a + b / a * b','element-wise ops'],
+    ['np.sum(a)','total sum'],
+    ['np.mean(a) / np.std(a)','mean / std dev'],
+    ['np.min/max/argmin/argmax','min/max & indices'],
+    ['np.sum(m, axis=0)','col-wise (down rows)'],
+    ['np.sum(m, axis=1)','row-wise (across cols)'],
+    ['np.sqrt / np.abs / np.exp','element-wise math'],
+  ]},
+  { title:'Pandas Series & DF', color:'#ec4899', rows:[
+    ['pd.Series([1,2,3])','create Series'],
+    ['pd.DataFrame({col:[vals]})','create DataFrame'],
+    ['df.shape / df.columns','(rows,cols) / col names'],
+    ['df.info() / df.describe()','summary / stats'],
+    ['df.head(n) / df.tail(n)','first/last n rows'],
+    ['df["col"]','select Series'],
+    ['df[["c1","c2"]]','select DataFrame'],
+  ]},
+  { title:'Pandas loc vs iloc', color:'#ec4899', rows:[
+    ['df.loc[label]','row by label (INCLUSIVE stop)'],
+    ['df.loc[r, "col"]','row+col by label'],
+    ['df.iloc[i]','row by position (EXCLUSIVE stop)'],
+    ['df.iloc[i, j]','row+col by position'],
+    ['df.loc[a:b]','rows a,a+1...b (b included!)'],
+    ['df.iloc[a:b]','rows a,a+1...b-1 (b excluded!)'],
+    ['df[df["c"]>x]','boolean filter'],
+  ]},
+  { title:'Pandas Operations', color:'#ec4899', rows:[
+    ['df["new"] = vals','add column'],
+    ['df.drop("col",axis=1)','drop column'],
+    ['df.drop(i, axis=0)','drop row'],
+    ['df.rename(columns={old:new})','rename col'],
+    ['df.sort_values("col")','sort ascending'],
+    ['df.set_index("col")','make col the index'],
+    ['df.reset_index()','restore default index'],
+  ]},
+];
+
+function renderCheatsheet() {
+  const g = document.getElementById('cheatsheet-grid');
+  g.innerHTML = CHEAT.map(c=>`
+    <div class="cs-card" style="border-top:2px solid ${c.color}">
+      <h3 style="color:${c.color}">${c.title}</h3>
+      <table class="cs-table">
+        ${c.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}
+      </table>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
+renderSidebar();
+renderMain();
+</script>
+</body>
+</html>
